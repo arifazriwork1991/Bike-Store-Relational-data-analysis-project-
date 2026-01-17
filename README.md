@@ -2,7 +2,7 @@
 This project involve using SQL queries, Power BI dashboard and Excel Report
 
 # Arif's Data Analyst Portfolio Welcome! 
-I'm a data analyst who builds dashboards in Power BI, Excel, and Tableau to turn data into business insights. 
+I'm a data analyst who builds dashboards in Power BI, Excel, SQL query and Tableau to turn data into business insights. 
 
 ##  About Me 
 - Experienced in Excel , Power BI, SQL, and Tableau.
