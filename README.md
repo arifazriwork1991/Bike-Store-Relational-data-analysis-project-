@@ -5,7 +5,7 @@ This project involve using SQL queries, Power BI dashboard and Excel Report
 I'm a data analyst who builds dashboards in Power BI, Excel, and Tableau to turn data into business insights. 
 
 ##  About Me 
-- Expert in Excel , Power BI, and Tableau.
+- Experienced in Excel , Power BI, SQL, and Tableau.
 - Skilled in troubleshooting chart scaling, formula construction, and dashboard layout.
 - Passionate about data storytelling and connecting technical work to business impact. 
 
@@ -15,9 +15,10 @@ I'm a data analyst who builds dashboards in Power BI, Excel, and Tableau to turn
 - Dashboard automation 
 
 ##  Featured Projects 
-- **Sales Dashboard (Excel 2010)** – [View Project](link)
-- **Customer Insights Dashboard (Power BI)** – [View Project](link)
-- **Product Performance Analysis (Tableau)** – [View Project](link) 
+- **Sales Perfomance Dashboard (Power BI)** – [View Project](link)
+- **Customer Insights & Behavior Dashboard (Power BI)** – [View Project](link)
+- **Bike Store Total Sales Perfomance Report(Excel)** – [View Project](link)
+- **SQL query (notepad)** - [View Project](link)
 
 ##  Contact 
 - Email: arifazriwork1991@gmail.com
