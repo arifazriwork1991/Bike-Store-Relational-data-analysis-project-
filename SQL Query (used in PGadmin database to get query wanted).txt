@@ -1,0 +1,103 @@
+SQL QUERY
+
+Total Sales by month
+SELECT SUM(quantity * list_price * (1 - discount)) as total_sales , TO_CHAR(DATE_TRUNC('month',o.order_date),'YYYY-MM') as month
+FROM order_items oi
+INNER JOIN orders o
+ON oi.order_id = o.order_id
+GROUP BY month;
+
+
+Top 10 Best-Selling Products
+SELECT p.product_name ,SUM(oi.quantity * oi.list_price * (1 - oi.discount)) as total_sales
+FROM orders o 
+INNER JOIN order_items oi
+ON o.order_id = oi.order_id
+INNER JOIN products p
+ON oi.product_id = p.product_id
+GROUP BY p.product_name 
+ORDER BY total_sales DESC
+LIMIT 10;
+
+
+Sales by Category
+SELECT c.category_name , SUM(oi.quantity * oi.list_price * (1 - oi.discount)) as total_sales
+FROM orders o 
+INNER JOIN order_items oi
+ON o.order_id = oi.order_id
+INNER JOIN products p
+ON oi.product_id = p.product_id
+INNER JOIN categories c
+ON p.category_id = c.category_id
+GROUP BY c.category_name
+
+
+Top 5 Customer by spending
+SELECT c.customer_id, c.first_name || ' ' || c.last_name as full_name, SUM(oi.quantity * oi.list_price * (1 - oi.discount)) as total_sales
+FROM orders o 
+INNER JOIN order_items oi
+ON o.order_id = oi.order_id
+INNER JOIN customers c
+ON o.customer_id = c.customer_id
+GROUP BY c.customer_id
+ORDER BY total_sales DESC
+LIMIT 5;
+
+
+Sales by Store
+SELECT s.store_name , SUM(oi.quantity * oi.list_price * (1 - oi.discount)) as total_sales
+FROM orders o 
+INNER JOIN order_items oi
+ON o.order_id = oi.order_id
+INNER JOIN stores s
+ON s.store_id = o.store_id
+GROUP BY s.store_name;
+
+
+Month-over-month Growth
+SELECT  
+		DATE_TRUNC('month',o.order_date) as month, 
+		SUM(oi.quantity * oi.list_price * (1 - oi.discount)) as total_sales,
+		LAG(SUM(oi.quantity * oi.list_price * (1 - oi.discount))) OVER (ORDER BY DATE_TRUNC('month', o.order_date)) AS previous_month_sales,
+		ROUND(
+        (
+            SUM(oi.quantity * oi.list_price * (1 - oi.discount)) 
+            - LAG(SUM(oi.quantity * oi.list_price * (1 - oi.discount))) OVER (ORDER BY DATE_TRUNC('month', o.order_date))
+        ) 
+        / NULLIF(LAG(SUM(oi.quantity * oi.list_price * (1 - oi.discount))) OVER (ORDER BY DATE_TRUNC('month', o.order_date)), 0) 
+        * 100, 
+        2
+    ) AS mom_growth_percent
+FROM orders o 
+INNER JOIN order_items oi
+ON o.order_id = oi.order_id
+INNER JOIN stores s
+ON s.store_id = o.store_id
+GROUP BY month
+ORDER BY month ASC
+
+
+Repeat vs New Customer
+WITH first_orders AS (
+  SELECT 
+    customer_id,
+    MIN(order_date) AS first_order_date
+  FROM orders
+  GROUP BY customer_id
+),
+monthly_orders AS (
+  SELECT 
+    DATE_TRUNC('month', order_date) AS month,
+    customer_id
+  FROM orders
+)
+SELECT 
+  mo.month,
+  COUNT(CASE WHEN mo.month = DATE_TRUNC('month', fo.first_order_date) THEN 1 END) AS new_customers,
+  COUNT(CASE WHEN mo.month > DATE_TRUNC('month', fo.first_order_date) THEN 1 END) AS repeat_customers
+FROM monthly_orders mo
+JOIN first_orders fo ON mo.customer_id = fo.customer_id
+GROUP BY mo.month
+ORDER BY mo.month;
+
+
